@@ -26,9 +26,12 @@ exports.signupUser = catchAsync(async (req, res, next) => {
         username,
         password,
     })
-    newUser.token = user.generateToken();
-    await storage(newUser._id.toHexString(), newUser.token);
-    res.status(201).json(newUser);
+    token = newUser.generateToken();
+    await storage(newUser._id.toHexString(), token);
+    res.status(201).json({
+        newUser,
+        "token":token,
+});
 });
 
 exports.loginUser = catchAsync(async (req, res, next) => {
@@ -48,9 +51,11 @@ exports.loginUser = catchAsync(async (req, res, next) => {
     if (!isPasswordMatched) {
         return res.status(401).json(new ErrorHandler("Password doesn't match", 401));
     }
-    user.token = user.generateToken();
-    await storage(user._id.toHexString(), user.token);
-    res.status(201).json(user);
+    token = user.generateToken();
+    await storage(user._id.toHexString(), token);
+    res.status(201).json({user,
+        "token":token,
+    });
 });
 
 exports.logoutUser = catchAsync(async (req, res, next) => {

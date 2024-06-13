@@ -5,17 +5,17 @@ const {storage,get, del} = require('../config/redis');
 
 
 exports.signupUser = catchAsync(async (req, res, next) => {
-    if (!req.body || !req.body.name || !req.body.phone || !req.body.username || !req.body.password) {
+    if (!req.body || !req.body.name || !req.body.phone || !req.body.email || !req.body.password) {
         return res.status(400).json({ error: 'Missing or invalid request body' });
       }
-    const { name, phone, username, password } = req.body;
+    const { name, phone, email, password } = req.body;
 
     const user = await User.findOne({
-        $or: [{ phone }, { username }]
+        $or: [{ phone }, { email }]
     });
     if (user) {
-        if (user.username === username) {
-            return res.status(401).json(new ErrorHandler("Username already exists")).toJSON();
+        if (user.email === email) {
+            return res.status(401).json(new ErrorHandler("Email already exists")).toJSON();
         }
         return res.status(401).json(new ErrorHandler("Phone already exists", 401));
     }
@@ -23,7 +23,7 @@ exports.signupUser = catchAsync(async (req, res, next) => {
     const newUser = await User.create({
         name,
         phone,
-        username,
+        email,
         password,
     })
     token = newUser.generateToken();
@@ -36,10 +36,10 @@ exports.signupUser = catchAsync(async (req, res, next) => {
 
 exports.loginUser = catchAsync(async (req, res, next) => {
 
-    const { userId, password } = req.body;
+    const { email, password } = req.body;
 
     const user = await User.findOne({
-        $or: [{ email: userId }, { username: userId }]
+         email
     }).select("+password");
 
     if (!user) {
@@ -62,3 +62,10 @@ exports.logoutUser = catchAsync(async (req, res, next) => {
     const { userId } = req.user;
     res.status(200).json({ message: "Logged out successfully" });
 });
+
+exports.getUsers = async (req, res, next) => {
+    const users = await User.find({
+        "_id":req.user.id
+    });
+    res.status(200).json(users);
+};

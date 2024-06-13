@@ -8,13 +8,18 @@ const orderSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
-    restaurantID : {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'Restaurant'
+    restaurant : {
+        ID:{
+            type : mongoose.Schema.Types.ObjectId,
+            required: true,
+        },
+        Name:{
+            type: String,
+            required: true
+        }
     },
     time: {
-        type: Date,
+        type: Number,
         required: true
     }
 })

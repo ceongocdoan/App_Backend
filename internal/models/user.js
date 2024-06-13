@@ -9,14 +9,14 @@ const userSchema = new mongoose.Schema({
         required: [true, "Please enter name"]
     },
     phone:{
-        type: Number,
+        type: String,
         required: [true, "Please enter phone number"]
     },
-    username: {
+    email: {
         type: String,
-        required: [true, "Please enter username"],
-        minlength: [6, "Username must be of minimum 6 characters"],
-        unique: [true, "Username already exists"],
+        required: [true, "Please enter email"],
+        minlength: [6, "Email must be of minimum 6 characters"],
+        unique: [true, "Email already exists"],
     },
     password: {
         type: String,

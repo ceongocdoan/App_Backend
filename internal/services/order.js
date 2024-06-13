@@ -4,13 +4,16 @@ const ErrorHandler = require('../pkg/errors');
 const mongoose = require('mongoose');
 
 exports.createOrder = catchAsync(async (req, res, next) => {
-    if (!req.body || !req.body.restaurantID || !req.body.time) {
+    if (!req.body || !req.body.restaurant || !req.body.time) {
         return res.status(400).json({ error: 'Missing or invalid request body' });
     }
-    const { restaurantID, time } = req.body;
+    const { restaurant, time } = req.body;
     const order = await Order.create({
         userID: req.user.id,
-        restaurantID,
+        restaurant:{
+            ID: restaurant.id,
+            Name: restaurant.name,
+        },
         time
     })
     res.status(201).json(order);

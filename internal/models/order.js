@@ -28,7 +28,11 @@ const orderSchema = new mongoose.Schema({
         Name:{
             type: String,
             required: true
-        }
+        },
+        Location:{
+            type: String,
+            required: false
+        },
     },
     time: {
         type: Number,

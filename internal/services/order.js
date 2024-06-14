@@ -16,8 +16,9 @@ exports.createOrder = catchAsync(async (req, res, next) => {
         restaurant:{
             ID: restaurant.id,
             Name: restaurant.name,
+            Location: restaurant.location
         },
-        time
+        time:time
     })
     res.status(201).json(order);
 });

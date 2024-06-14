@@ -61,6 +61,10 @@ exports.listOrder = catchAsync(async (req, res, next) => {
     const listRestaurants = await Restaurants.find(query);
     const orders = await Orders.find({ time: time });
     const listRestaurant = [];
+    if (orders.length === 0) {
+        res.status(200).json(listRestaurants);
+        return;
+    }
     listRestaurants.forEach(element => {
         orders.forEach(item => {
             if (element._id.toString() !== item.restaurant.ID.toString()) {

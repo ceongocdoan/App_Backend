@@ -8,6 +8,18 @@ const orderSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
+    phone: {
+        type: String,
+        required: true
+    },
+    numberOfPeople: {
+        type: Number,
+        required: true
+    },
+    fullName: {
+        type: String,
+        required: true
+    },
     restaurant : {
         ID:{
             type : mongoose.Schema.Types.ObjectId,

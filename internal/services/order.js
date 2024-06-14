@@ -7,9 +7,12 @@ exports.createOrder = catchAsync(async (req, res, next) => {
     if (!req.body || !req.body.restaurant || !req.body.time) {
         return res.status(400).json({ error: 'Missing or invalid request body' });
     }
-    const { restaurant, time } = req.body;
+    const { restaurant, time,phone,numberOfPeople,fullName } = req.body;
     const order = await Order.create({
         userID: req.user.id,
+        phone:phone,
+        numberOfPeople:numberOfPeople,
+        fullName:fullName,
         restaurant:{
             ID: restaurant.id,
             Name: restaurant.name,
@@ -29,7 +32,7 @@ exports.listOrder = catchAsync(async (req, res, next) => {
                 from: "restaurants", 
                 localField: "restaurantID", 
                 foreignField: "_id", 
-                as: "restaurant"
+                as: "restaurantInfo"
             }
         },
     ]);
